@@ -33,7 +33,7 @@ void loop() {
         }
     }
     int nextCol = random(6) + 'a';
-    currentDispenser = 1;
+    currentDispenser = (currentDispenser + 1)%2;
     Serial.println(String(data) + "," + String((currentDispenser+'x')));
     while (true) {
         while (!Serial.available()) {}
@@ -46,6 +46,6 @@ void loop() {
             break;
         }
     }
-    currentDispenser = 0;
+    currentDispenser = (currentDispenser + 1)%2;
   }
 }
