@@ -37,7 +37,7 @@ AccelStepper *columns[7] = {
 
 AccelStepper *dispensers[2] = {
   &dispenser1,
-  &dispenser2
+  &dispenser2 
 };
 
 
@@ -47,7 +47,7 @@ void initSteppers() {
     columns[col]->setMaxSpeed(MAX_SPEED);
     columns[col]->setAcceleration(ACCELARATION);
   }
-  for(byte disp = 0; disp < 7; disp++){
+  for(byte disp = 0; disp < 2; disp++){
     dispensers[disp]->setSpeed(SPEED);
     dispensers[disp]->setMaxSpeed(MAX_SPEED);
     dispensers[disp]->setAcceleration(ACCELARATION);
@@ -60,6 +60,13 @@ void openColumn(AccelStepper *s) {
   delay(3000);
   s->move(-512);
   s->runToPosition();
+  Serial.println("DONE");
+}
+
+void openDispenser(AccelStepper *s) {
+  s->move(512);
+  s->runToPosition();
+  Serial.println("DONE");
 }
 
 void setup() {
@@ -74,4 +81,5 @@ void loop() {
   input = Serial.read();
   Serial.println(input);
   if (input >= 'a' && input <= 'g') openColumn(columns[input - 'a']);
+  if (input >= 'x' && input <= 'y') openDispenser(dispensers[input - 'x']);
 }
