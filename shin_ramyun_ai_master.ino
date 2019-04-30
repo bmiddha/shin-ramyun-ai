@@ -18,7 +18,6 @@ void humanMove(int move) {
 
 void setup() {
   Serial.begin(115200);
-  // Serial.println("Starting Shin Ramyun AI Master ...");
   radio.begin();
   radio.openReadingPipe(0, address);
   radio.openWritingPipe(address);
@@ -28,7 +27,6 @@ void setup() {
 
 void moveHandler(int data) {
   Serial.println(String((char)data) + "," + String((char)(currentDispenser + 'x')));
-
   while (true) {
     while (!Serial.available()) {}
     while (radio.available()) {
@@ -51,9 +49,10 @@ void loop() {
     radio.read(&data, sizeof(data));
 
     moveHandler(data);
-    humanMode(data);
+    humanMove(data);
 
     moveHandler(getAIMove());
 
-  }
+      //moveHandler(getAIMove());
+}
 }
