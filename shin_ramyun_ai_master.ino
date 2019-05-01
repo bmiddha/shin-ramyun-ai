@@ -63,8 +63,6 @@ typedef struct {
 GameState* globalState;
 GameTreeNode* g_node = NULL;
 
-
-
 void resetGame(){
   freeGameState(globalState);
   startNewGame();
@@ -108,7 +106,8 @@ void loop() {
       playerMove(data);
       checkWin(globalState);
 
-      moveHandler(computerMove(7));
+      int ai_move = computerMove(7) + 'a';
+      moveHandler(ai_move);
       checkWin(globalState);
     }
     if (data == 'x')
