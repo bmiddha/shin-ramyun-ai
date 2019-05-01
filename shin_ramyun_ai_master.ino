@@ -32,8 +32,38 @@ RF24 radio(7, 8);
 const byte address[6] = "00001";
 int currentDispenser = 0;
 
+typedef struct {
+  int width;
+  int height;
+  int* board;
+  int last_move;
+  int weight;
+
+  int refs;
+} GameState;
+
+typedef struct {
+  GameState*** bins;
+} TranspositionTable;
+
+typedef struct {
+  GameState* gs;
+  int player;
+  int other_player;
+  int turn;
+  
+  int alpha;
+  int beta;
+
+  int best_move;
+
+  TranspositionTable* ht;
+} GameTreeNode;
+
 GameState* globalState;
 GameTreeNode* g_node = NULL;
+
+
 
 void resetGame(){
   freeGameState(globalState);
@@ -376,11 +406,6 @@ int isGameStateEqual(GameState* gs1, GameState* gs2) {
   return 1;
 }
 
-typedef struct {
-  GameState*** bins;
-} TranspositionTable;
-
-
 TranspositionTable* newTable() {
   int i, j;
   TranspositionTable* toR = (TranspositionTable*) malloc(sizeof(TranspositionTable));
@@ -439,20 +464,6 @@ void freeTranspositionTable(TranspositionTable* t) {
 
   free(t);
 }
-
-typedef struct {
-  GameState* gs;
-  int player;
-  int other_player;
-  int turn;
-  
-  int alpha;
-  int beta;
-
-  int best_move;
-
-  TranspositionTable* ht;
-} GameTreeNode;
 
 GameTreeNode* newGameTreeNode(GameState* gs, int player, int other, int turn, int alpha, int beta, TranspositionTable* ht) {
   GameTreeNode* toR = (GameTreeNode*) malloc(sizeof(GameTreeNode));
